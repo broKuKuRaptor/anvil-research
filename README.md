@@ -324,6 +324,32 @@ Anvil
 
 Каждый компонент прорабатывается отдельным design/research документом.
 
+## Development infrastructure
+
+Помимо runtime и hardware-компонентов Anvil предусматривает отдельный набор инструментов для безопасной и воспроизводимой разработки:
+
+```text
+Development Infrastructure
+├── Image / Partition Tooling
+├── Anvil Device Lab
+├── Experiment Automation / Provenance
+├── Hardware-in-the-Loop CI / Bisect
+├── Failure Analysis / Regression
+└── Reproducible Builds
+```
+
+Их назначение:
+
+- автоматизировать повторяющиеся ADB/Fastboot/recovery workflows;
+- валидировать images до записи на устройство;
+- связывать source commits, build artifacts и physical experiments;
+- сохранять experiment evidence и rollback results;
+- сравнивать Golden Android и Anvil capability snapshots;
+- выполнять предварительный deterministic failure triage до передачи данных AI-agent;
+- обеспечивать воспроизводимость builds и provenance artifacts.
+
+MCP рассматривается как один frontend к **Anvil Device Lab Core**, а не как место основной orchestration logic.
+
 ## Reference projects
 
 Anvil не является форком этих проектов, но использует их как инженерную и архитектурную базу:
@@ -340,18 +366,31 @@ Anvil не является форком этих проектов, но исп�
 
 Особое внимание уделяется повторному использованию существующих решений вместо разработки аналогичных механизмов с нуля.
 
+## Организация разработки
+
+Нормативные правила разработки определены в `WORKFLOW.md`.
+
+Кратко:
+
+- текущее accepted состояние хранится в `CURRENT.md`;
+- stage history — в `worklog/`;
+- reusable подтверждённые знания — в `knowledge/`;
+- provenance документации, repositories, tools, patches и images — в `sources/`;
+- canonical terminology — в `GLOSSARY.md`.
+
 ## Текущий статус
 
-Проект находится на стадии архитектурного проектирования и исследования существующих решений.
+Проект находится на стадии архитектурного проектирования и исследования существующих решений. Development workflow и структура research infrastructure уже определены; production source code пока отсутствует.
 
 Текущие основные задачи:
 
-1. определить границы отдельных компонентов;
-2. исследовать существующие реализации;
-3. выбрать переиспользуемые технологии;
-4. определить необходимые изменения;
-5. подготовить PoC-планы;
-6. перейти к реализации Device Capture, Debian boot и Android Container Core.
+1. углубить приоритетные research nodes первого PoC;
+2. определить Golden Device Capture и Device Profile formats;
+3. проработать Debian boot и Android Container Core;
+4. определить initial Android image/framework strategy;
+5. подготовить Image Tooling и Device Lab для безопасных физических экспериментов;
+6. переносить подтверждённые выводы в accepted architecture/specification docs;
+7. перейти к реализации после закрытия необходимых research gates.
 
 ## Принцип проекта
 

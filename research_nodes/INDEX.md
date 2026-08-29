@@ -1,0 +1,21 @@
+# Research Nodes Index
+
+- `00_architecture/ADR-001-debian-host-architecture.md` — ADR-001: Debian как базовая Linux-платформа
+- `10_device/10_device_capture.md` — Device Capture / Golden Android Snapshot
+- `10_device/12_device_profile.md` — Device Profile / Hardware Adaptation Description
+- `20_runtime/20_runtime_manager.md` — Runtime Manager
+- `20_runtime/21_android_container_core.md` — Android Container Core
+- `20_runtime/22_graphics_display_input.md` — Graphics / Display / Input
+- `20_runtime/23_vendor_hal_integration.md` — Vendor / HAL Integration
+- `30_integration/30_networking.md` — Networking
+- `30_integration/31_application_management.md` — Application Management / Launcher
+- `30_integration/32_desktop_integration.md` — Desktop Integration
+- `40_testing/40_diagnostics_testing.md` — Diagnostics / Regression Testing
+- `50_hardware/50_audio.md` — Audio
+- `50_hardware/51_camera_media.md` — Camera / Media Buffers
+- `50_hardware/52_telephony_modem.md` — Telephony / Modem
+- `50_hardware/53_sensors_gnss.md` — Sensors / GNSS
+- `50_hardware/54_power_thermal_battery.md` — Power / Thermal / Battery
+- `50_hardware/55_wireless.md` — Wireless: Wi-Fi / Bluetooth
+- `60_platform/60_security_model.md` — Security Model
+- `60_platform/61_packaging_images_updates.md` — Packaging / Images / Updates

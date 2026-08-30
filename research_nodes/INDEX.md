@@ -31,6 +31,7 @@
 - `40_testing/41_device_lab_mcp.md` — Anvil Device Lab и MCP frontend
 - `40_testing/42_experiment_automation.md` — Experiment Automation / Provenance / HIL CI
 - `40_testing/43_failure_analysis_regression.md` — Failure Analysis / Regression Engine
+- `40_testing/44_virtual_test_bed.md` — Virtual Test Bed / VM Pre-flight
 
 ## Hardware
 

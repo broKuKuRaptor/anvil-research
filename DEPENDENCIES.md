@@ -76,33 +76,54 @@ Device Capture
       ▼
 Device Profile
       │
-      ▼
-Image Tooling
-      │
-      ▼
-Device Lab
-      │
       ├───────────────┐
       ▼               ▼
-Diagnostics      Experiment Automation
+Image Tooling    Virtual Test Bed
       │               │
-      ▼               ├───────────────┐
-Failure Analysis      │               ▼
- / Regression         │          HIL CI / Bisect
-      ▲                │
-      └────────────────┘
-                       │
-                       ▼
-              Reproducible Builds
+      ▼               ▼
+Device Lab      VM / Cuttlefish backends
+      │               │
+      └───────┬───────┘
+              ▼
+     Experiment Automation
+       ┌──────┴────────┐
+       ▼               ▼
+ Diagnostics       HIL CI / Bisect
+       │
+       ▼
+Failure Analysis / Regression
+              │
+              ▼
+     Reproducible Builds
 ```
 
 Точные отношения:
 
 - `13_image_tooling` использует Device Capture и Device Profile и обслуживает Device Lab, Experiment Automation и Packaging.
-- `41_device_lab_mcp` использует Device Profile, Image Tooling и Diagnostics.
-- `42_experiment_automation` строится поверх Device Lab и Diagnostics, использует Image Tooling и связывается с Reproducible Builds.
-- `43_failure_analysis_regression` использует Diagnostics и Device Lab и отдаёт структурированные результаты Experiment Automation/HIL CI.
-- `62_reproducible_builds` связан с Image Tooling, Experiment Automation и Packaging и должен использоваться всеми build-producing узлами.
+- `41_device_lab_mcp` использует Device Profile, Image Tooling и Diagnostics и остаётся physical-device backend.
+- `44_virtual_test_bed` определяет virtual pre-flight backends: static, native VM/KVM, ARM64 QEMU и Android virtual-device/Cuttlefish testing.
+- `44_virtual_test_bed` использует Device Capture/Golden Snapshot как источник fixtures и связан с Android Container Core, Diagnostics и Reproducible Builds.
+- `42_experiment_automation` должен стать общим orchestration layer над `44_virtual_test_bed` и `41_device_lab_mcp`, чтобы один experiment model мог работать с virtual и physical targets.
+- `43_failure_analysis_regression` использует Diagnostics и experiment artifacts и должен учитывать backend/test level при оценке доказательности результата.
+- `62_reproducible_builds` связан с Image Tooling, Virtual Test Bed, Experiment Automation и Packaging и должен использоваться всеми build-producing узлами.
+
+## Validation levels
+
+`44_virtual_test_bed` вводит предварительную модель уровней:
+
+```text
+L0 Static
+  ↓
+L1 Native VM/KVM
+  ↓
+L2 ARM64 QEMU    L2A Cuttlefish/Android Virtual Device
+        \          /
+         \        /
+          ▼      ▼
+        L3 Device Lab / HIL
+```
+
+Физический телефон остаётся source of truth для target kernel, vendor/HAL, firmware, boot-chain и hardware behavior. Виртуальные backends используются для раннего отсева ошибок userspace/runtime/build/integration до физического эксперимента.
 
 ## Сквозные направления
 
@@ -113,6 +134,7 @@ Diagnostics / Testing
 Security Model
 Packaging / Images / Updates
 Image Tooling
+Virtual Test Bed
 Reproducible Builds
 Device Lab / Experiment Infrastructure
 ```
@@ -132,12 +154,13 @@ Device Lab / Experiment Infrastructure
 9. `24_android_image_framework_strategy`
 10. `40_diagnostics_testing`
 11. `41_device_lab_mcp`
+12. `44_virtual_test_bed`
 
 После появления первых конкретных experiment/build artifacts приоритет получают:
 
-12. `42_experiment_automation`
-13. `43_failure_analysis_regression`
-14. `62_reproducible_builds`
+13. `42_experiment_automation`
+14. `43_failure_analysis_regression`
+15. `62_reproducible_builds`
 
 ## Правило
 
